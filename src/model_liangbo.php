@@ -25,6 +25,8 @@
 	
 	$gender = array(array('female', 0),array('male', 0));
 	$query = mysql_query("select * from follows where keyword = '$keyword'") or die("select follows failed!");
+	$tp_pr = array();
+
 	while ($row = mysql_fetch_row($query)) {
 		# GENDER
 		if ($row[2] == 'f')
@@ -32,10 +34,22 @@
 		else
 			$gender[1][1] += 1;
 
+		if ($tp_pr[] == null)
+			$tp_pr[] = 1;
+		else $tp_pr[]++;
 	}
 	
+	# gender
 	$s = $gender[0][1] + $gender[1][1];
 	$gender[0][1] = $gender[0][1] * 100 / $s;
 	$gender[1][1] = $gender[1][1] * 100 / $s;
 	$gender = json_encode($gender);
+
+	# province
+	$pr = array();
+	foreach ($tp_pr as $k=>$v) {
+		$temp = array($k, $v);
+		array_push($pr, $temp);
+	}
+	$pr = json_encode($pr);
 ?>

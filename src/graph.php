@@ -9,6 +9,7 @@
 <script src="highchart/jquery.min.js"></script>
 <script src="highchart/js/highcharts.js"></script>
 <script src="highchart/js/modules/exporting.js"></script>
+<script src="province_map.js"></script>
 <script type="text/javascript">
 	var chart;
 	var pie1;

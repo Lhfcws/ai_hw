@@ -8,8 +8,9 @@
 <meta charset="utf-8">
 <script src="highchart/jquery.min.js"></script>
 <script src="highchart/js/highcharts.js"></script>
+<script src="province_map.js"></script>
 <script type="text/javascript">
-	var chart,pie1;
+	var chart,pie1,pie2;
 	var date_prefix = '2012-09-';
 	var dateArr = eval(<?=$plots?>);
 	var stat = eval(<?=$stat?>);
@@ -62,7 +63,8 @@
 				data: <?=$stat?>
 			}]
 		});			
-				pie1 = new Highcharts.Chart({
+
+		pie1 = new Highcharts.Chart({
             chart: {
                 renderTo: 'container1',
                 plotBackgroundColor: null,
@@ -94,6 +96,45 @@
                 type: 'pie',
                 name: '性别分布',
                 data: <?=$gender?>
+            }]
+        });
+
+		var pr = <?=$pr?>;
+		for (var i=0;i<pr.length;i++) {
+			pr[i] = province_map[pr[i]];
+		}
+		pie2 = new Highcharts.Chart({
+            chart: {
+                renderTo: 'container2',
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            title: {
+                text: '关注用户的地域分布'
+            },
+            tooltip: {
+        	    pointFormat: '{series.name}: <b>{point.percentage}%</b>',
+            	percentageDecimals: 1
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        color: '#000000',
+                        connectorColor: '#000000',
+                        formatter: function() {
+                            return '<b>'+ this.point.name +'</b>: '+ Highcharts.numberFormat(this.percentage, 2) +' %';
+                        }
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: '地域分布',
+                data: pr
             }]
         });
 	});
