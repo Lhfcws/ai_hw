@@ -41,4 +41,5 @@ While using splinter, the app will automatically keep popping out the browser an
 7. Wait for a few minutes. (may be tens or more, depends on the amount of data and the network speed )
 	!!! WARN: If you are running under your localhost, which means the python scripts are running in your PC, then keep patient and do not operate your computer while running! As the running time depends on your network speed and your main memory. And web driver is not stable, so sometimes it may somehow stop without any reason.
 
-8. You can input the name again in the index.php, if the page show you "waiting", then the running is not finished; otherwise, it will show you graph.php which contains at least a lines graph and several pie graphs.
+8. Run src/collect/collect.py to call weibo API. As Sina has set many barriers for API call, the script is very likely to stop many times by sina server and you have to wait for another hour to continue the script.
+9. You can input the name again in the index.php, if the page show you "waiting", then the running is not finished; otherwise, it will show you graph.php which contains at least a lines graph and several pie graphs.

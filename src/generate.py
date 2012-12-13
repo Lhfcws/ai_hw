@@ -6,10 +6,12 @@
 
 import crawl
 import plots
+from collect import collect
 
 def main():
 	plots.main()
 	crawl.main()
+	#collect.main()
 
 main()
 
