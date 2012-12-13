@@ -7,12 +7,12 @@ While using splinter, the app will automatically keep popping out the browser an
 [Installation]
 1. Make sure you have apache(or any server can run php), python 2.7.
 2. Install splinter ( including lxml and selenium ) and MySQLdb for python:
-	- Linux(Strongly suggested):
+	- Linux:
 		# Take Ubuntu as an example. Fedora and Arch are similar to this.
 		sudo apt-get install python-lxml python-pip cython python-mysqldb
 		pip install splinter
 
-	- Windows(not recommend):
+	- Windows:
 		Cython: 	http://download.csdn.net/detail/feisan/4301293
 		lxml:		http://lxml.de/
 		selenium:	http://pypi.python.org/pypi/selenium/2.25.0#downloads
@@ -24,7 +24,6 @@ While using splinter, the app will automatically keep popping out the browser an
 3. Install Firefox, make sure that the version is not too old.
 
 [Run]
-# Strongly suggest you to run in Linux.
 1. Edit src/server.conf as follow:
 	# hostname, use localhost if for test
 	# database username
