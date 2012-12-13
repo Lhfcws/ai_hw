@@ -12,7 +12,7 @@
 <script src="province_map.js"></script>
 <script type="text/javascript">
 	var chart;
-	var pie1;
+	var pie1, pie2;
 	var date_prefix = '2012-09-';
 	var dateArr = eval(<?=$plots?>);
 	var stat = eval(<?=$stat?>);
@@ -103,11 +103,56 @@
                 data: <?=$gender?>
             }]
         });
+		//=======================
+		var pr = <?=$pr?>;
+		var pr_sum = <?=$pr_sum?>;
+		for (var i=0;i<pr.length;i++) {
+			pr[i][0] = province_map[pr[i][0]];
+			pr[i][1] = parseFloat(pr[i][1]);
+			pr[i][1] = pr[i][1]*100.00/pr_sum;
+		}
+		console.log(pr);
+
+		pie2 = new Highcharts.Chart({
+            chart: {
+                renderTo: 'container2',
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            title: {
+                text: '关注用户的地域分布'
+            },
+            tooltip: {
+        	    pointFormat: '{series.name}: <b>{point.percentage}%</b>',
+            	percentageDecimals: 1
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        color: '#000000',
+                        connectorColor: '#000000',
+                        formatter: function() {
+                            return '<b>'+ this.point.name +'</b>: '+ Highcharts.numberFormat(this.percentage, 2) +' %';
+                        }
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: '地域分布',
+                data: pr
+            }]
+        });
 	});
 </script>
 </head>
 <body>
 <div id="container" style="width: 1360px;height: 800px; margin: 0 auto;"></div>
 <div id="container1" style="width: 660px;height: 600px; margin: 0 auto;"></div>
+<div id="container2" style="width: 660px;height: 600px; margin: 0 auto;"></div>
 </body>
 </html>

@@ -33,10 +33,11 @@
 			$gender[0][1] += 1;
 		else
 			$gender[1][1] += 1;
-
-		if ($tp_pr[] == null)
-			$tp_pr[] = 1;
-		else $tp_pr[]++;
+		#PROVINCE
+		$p = $row[7];
+		if ($tp_pr[$p] == null)
+			$tp_pr[$p] = 1;
+		else $tp_pr[$p]++;
 	}
 	
 	# gender
@@ -47,8 +48,10 @@
 
 	# province
 	$pr = array();
+	$pr_sum = 0;
 	foreach ($tp_pr as $k=>$v) {
-		$temp = array($k, $v);
+		$temp = array($k, (int)$v);
+		$pr_sum += $v;
 		array_push($pr, $temp);
 	}
 	$pr = json_encode($pr);

@@ -99,10 +99,16 @@
             }]
         });
 
+		//=======================
 		var pr = <?=$pr?>;
+		var pr_sum = <?=$pr_sum?>;
 		for (var i=0;i<pr.length;i++) {
-			pr[i] = province_map[pr[i]];
+			pr[i][0] = province_map[pr[i][0]];
+			pr[i][1] = parseFloat(pr[i][1]);
+			pr[i][1] = pr[i][1]*100.00/pr_sum;
 		}
+		console.log(pr);
+
 		pie2 = new Highcharts.Chart({
             chart: {
                 renderTo: 'container2',
@@ -143,5 +149,6 @@
 <body>
 <div id="container" style="width: 1300px;height: 800px; margin: 0 auto;"></div>
 <div id="container1" style="width: 660px;height: 600px; margin: 0 auto;"></div>
+<div id="container2" style="width: 660px;height: 600px; margin: 0 auto;"></div>
 </body>
 </html>
