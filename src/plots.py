@@ -25,7 +25,7 @@ def main():
 	cursor = conn.cursor()
 	cursor.execute("set names 'utf8'")
 	# init 
-	M = Main("lhfcws@163.com", "weibolhfcws")
+	M = Main("ai2012_go@126.com", "aiai2012")
 	M.start()
 	M.login()
 
