@@ -24,18 +24,20 @@ While using splinter, the app will automatically keep popping out the browser an
 3. Install Firefox, make sure that the version is not too old.
 
 [Run]
-1. Edit server.conf as follow:
+1. Edit src/server.conf as follow:
 	# hostname, use localhost if for test
 	# database username
 	# database password
 
-2. Demo:
+2. 
+
+3. Demo:
 	open liangbo.php to see the demo graph.
 
-3. Open index.php, make sure session can be used in your php.
-4. Input a star's name you wanted to know about.
-5. After seeing the wait.php page, run generate.py to generate the data.
-5. Wait for a few minutes. (may be tens or more, depends on the amount of data and the network speed )
+4. Open index.php, make sure session can be used in your php.
+5. Input a star's name you wanted to know about.
+6. After seeing the wait.php page, run generate.py to generate the data.
+7. Wait for a few minutes. (may be tens or more, depends on the amount of data and the network speed )
 	!!! WARN: If you are running under your localhost, which means the python scripts are running in your PC, then keep patient and do not operate your computer while running! As the running time depends on your network speed and your main memory. And web driver is not stable, so sometimes it may somehow stop without any reason.
 
-5. You can input the name again in the index.php, if the page show you "waiting", then the running is not finished; otherwise, it will show you graph.php which contains at least a lines graph and several pie graphs.
+8. You can input the name again in the index.php, if the page show you "waiting", then the running is not finished; otherwise, it will show you graph.php which contains at least a lines graph and several pie graphs.
