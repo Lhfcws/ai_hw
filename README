@@ -4,6 +4,8 @@ Based on Sina Weibo (http://www.weibo.com), dig out some information to build a 
 We use splinter to get the webpage source and avoid the captcha.
 While using splinter, the app will automatically keep popping out the browser and automatically close it. Meanwhile, users are supposed not to operate the computer in order to ensure the stability of splinter, especially not to operate the firefox browser popped out by the webdriver. 
 
+This project can be downloaded on Github: https://github.com/Lhfcws/ai_hw
+
 [Installation]
 # Strongly suggest you to run in Linux.
 1. Make sure you have apache(or any server can run php), python 2.7.

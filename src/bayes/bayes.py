@@ -1,4 +1,4 @@
-#not /usr/bin/python2
+#! /usr/bin/python2
 #encoding=utf-8
 
 # P(H|T) = P(T|H)*P(H) / (P(T|H)*P(H) + P(T|M)*P(M))								Bayesian Law
@@ -20,7 +20,7 @@ def readFile(filename):
 def writeFile(lis, filename):
 	f = open(filename, 'w')
 	for l in lis:
-		f.write(l+"\n")
+		f.write(l)
 	f.close()
 
 def segword(sentence):
@@ -36,11 +36,13 @@ def train_frontend():
 
 	lines = readFile(srcFile)
 	hitlist = misslist = []
+	cnt = 0
 
 	for line in lines:
+		cnt += 1
 		print "=============================================================="
 		print "Weibo: \n" + line
-		print ""
+		print "No. " + str(cnt)
 		yn = raw_input("Is it about his music? (y/n/q): ")
 		if yn == "y":
 			hitlist.append(line)
@@ -153,12 +155,14 @@ def missProbability(tokens, P_MT):
 
 def init():
 	# training
-	hsum, msum = train_frontend()
+	#hsum, msum = train_frontend()
+	hsum = len(readFile("hits.txt"))
+	msum = len(readFile("miss.txt"))
 	P_H = float(hsum) / float(hsum + msum)
 	P_M = float(msum) / float(hsum + msum)
 
 	# Bayesian Calculate
-	P_TH, P_TM = getTokensProbability
+	P_TH, P_TM = getTokensProbability(hsum, msum)
 	P_HT = getP_HT_Table(hsum, msum, P_TH, P_TM)
 	P_MT = getP_MT_Table(hsum, msum, P_TH, P_TM)
 
