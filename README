@@ -5,6 +5,7 @@ We use splinter to get the webpage source and avoid the captcha.
 While using splinter, the app will automatically keep popping out the browser and automatically close it. Meanwhile, users are supposed not to operate the computer in order to ensure the stability of splinter, especially not to operate the firefox browser popped out by the webdriver. 
 
 [Installation]
+# Strongly suggest you to run in Linux.
 1. Make sure you have apache(or any server can run php), python 2.7.
 2. Install splinter ( including lxml and selenium ) and MySQLdb for python:
 	- Linux(Strongly suggested):
