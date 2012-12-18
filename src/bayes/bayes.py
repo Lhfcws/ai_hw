@@ -20,7 +20,7 @@ def readFile(filename):
 def writeFile(lis, filename):
 	f = open(filename, 'w')
 	for l in lis:
-		f.write(l+"\n")
+		f.write(str(l))
 	f.close()
 
 def segword(sentence):
@@ -99,12 +99,13 @@ def getP_HT_Table(hsum, msum, P_TH, P_TM):
 	P_HT = dict()
 	for token in P_TH:
 		# Laplace Correction
-		if not(P_TH.has_key(token)):
-			P_TH[token] = 0.5 / float(hsum)
-		if not(P_TM.has_key(token)):
-			P_TM[token] = 0.5 / float(msum)
+		if not(P_TH.has_key(token)) or P_TH[token] == 0:
+			P_TH[token] = 1.0 / float(hsum)
+		if not(P_TM.has_key(token)) or P_TM[token] == 0:
+			P_TM[token] = 1.0 / float(msum)
 
-		P_HT[token] = getP_HT(P_H, P_M, P_TH, P_TM)
+		print P_H,P_M, P_TH[token], P_TM[token]
+		P_HT[token] = getP_HT(P_H, P_M, P_TH[token], P_TM[token])
 		
 	return P_HT
 
@@ -120,30 +121,34 @@ def getP_MT_Table(hsum, msum, P_TH, P_TM):
 	P_MT = dict()
 	for token in P_TM:
 		# Laplace Correction
-		if not(P_TH.has_key(token)):
-			P_TH[token] = 0.5 / float(hsum)
-		if not(P_TM.has_key(token)):
-			P_TM[token] = 0.5 / float(msum)
+		if not(P_TH.has_key(token)) or P_TH[token] == 0:
+			P_TH[token] = 1.0 / float(hsum)
+		if not(P_TM.has_key(token)) or P_TM[token] == 0:
+			P_TM[token] = 1.0 / float(msum)
 
-		P_MT[token] = getP_MT(P_H, P_M, P_TH, P_TM)
+		P_MT[token] = getP_MT(P_H, P_M, P_TH[token], P_TM[token])
 		
 	return P_MT
 
-def hitProbability(tokens, P_HT):
+def hitProbability(tokens, P_HT, hsum):
 	res = 0
 	s1 = 1
 	s2 = 1
 	for token in tokens:
+		if not(P_HT.has_key(token)) or P_HT[token] == 0:
+			P_HT[token] = 1.0 / float(hsum)
 		s1 *= float(P_HT[token])
 		s2 *= float(1 - P_HT[token])
 
 	return s1 / ( s1 + s2 )
 
-def missProbability(tokens, P_MT):
+def missProbability(tokens, P_MT, msum):
 	res = 0
 	s1 = 1
 	s2 = 1
 	for token in tokens:
+		if not(P_MT.has_key(token)) or P_MT[token] == 0:
+			P_MT[token] = 1.0 / float(msum)
 		s1 *= float(P_MT[token])
 		s2 *= float(1 - P_MT[token])
 
@@ -156,27 +161,30 @@ def init():
 	P_M = float(msum) / float(hsum + msum)
 
 	# Bayesian Calculate
-	P_TH, P_TM = getTokensProbability
+	P_TH, P_TM = getTokensProbability(hsum, msum)
 	P_HT = getP_HT_Table(hsum, msum, P_TH, P_TM)
 	P_MT = getP_MT_Table(hsum, msum, P_TH, P_TM)
 
-	return [P_HT, P_MT, P_H, P_M]
+	return [P_HT, P_MT, P_H, P_M, hsum, msum]
 
 # ================MAIN=====================
 def main():
-	P_HT, P_MT, P_H, P_M = init()
+	P_HT, P_MT, P_H, P_M, hsum, msum = init()
 	
 	lines = readFile("testFile.txt")
 	resList = []
 
 	for line in lines:
 		tokens = segword(line)
-		hitP = hitProbability(tokens, P_HT) * P_H
-		missP = missProbability(tokens, P_MT) * P_M
+		hitP = hitProbability(tokens, P_HT, hsum) * P_H
+		missP = missProbability(tokens, P_MT, msum) * P_M
 		if missP > hitP:
 			resList.append(line)
 
-	writeFile("result.txt", [len(lines), len(resList)])
+	print P_HT
+	print P_MT
+
+	writeFile([str(len(lines))+"\n", len(resList)], "result.txt")
 
 
 

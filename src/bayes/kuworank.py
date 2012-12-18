@@ -3,9 +3,11 @@
 
 from pyquery import PyQuery as pq
 import urllib
+import re
 
 def sina_urlencode(s):
 	reprStr = repr(s).replace(r'\x', '%25')
+	reprStr = repr(reprStr).replace(' ', '%2520')
 	return reprStr[1:-1]
 
 def initUrl(keyword):
@@ -61,13 +63,31 @@ def getWeiboRank(keyword, res):
 	src = "http://s.weibo.com/weibo/"
 	suff= "&scope=ori"
 	dd = dict()
+	cnt = 0
 	for r in res:
-		key = keyword + ' ' + r
-		key = sina_urlencode(key)
+		if cnt>10:
+			break
+		key = sina_urlencode(keyword) + '%2520' + sina_urlencode(r.encode("utf-8"))
+		print src+key+suff
 		D = pq(url=src+key+suff)
-		stat = D(".topcon_num > .W_textc").text
+		text = D.html()
+		pn = re.compile("noresult_tit")	
+		p = re.compile("\\\\u627e\\\\u5230 [,|0-9]*")
+		non = pn.search(text)
+		if non != None:
+			continue
+		st = p.search(text)
+		st = st.group()
+		lis = st.split()
+		print lis
+		lis = lis[1].split(',')
+
+		stat = ""
+		for l in lis:
+			stat = stat + l
 		stat = int(stat)
 		dd[stat] = r
+		cnt += 1
 	
 	lis = dd.items()
 	lis = sorted(lis, reverse=True)
@@ -77,11 +97,14 @@ def getWeiboRank(keyword, res):
 def main(keyword):
 	D = pq(url=initUrl(keyword))
 	names = D(".songName > a")
+	songers = D(".songName > a").parent().siblings(".songer > a")
 	vals = D(".rq > span")
 	cnt = 0
 	dic = dict()
 
-	for item in names:
+	for i in range(len(names)):
+		item = names[i]
+	
 		name = strip(item.text).strip()
 		dic = insert_once(name, int(vals[cnt].text), dic)
 		cnt += 1
@@ -96,4 +119,4 @@ def main(keyword):
 	
 	writeFile(keyword, res)
 
-	return res
+	return [r[1] for r in res]
