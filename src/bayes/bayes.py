@@ -1,4 +1,4 @@
-#not /usr/bin/python2
+#! /usr/bin/python2
 #encoding=utf-8
 
 # P(H|T) = P(T|H)*P(H) / (P(T|H)*P(H) + P(T|M)*P(M))								Bayesian Law
@@ -6,8 +6,8 @@
 
 import jieba
 
-hitsFile = "hits.txt"
-missFile = "miss.txt"
+hitsFile = "hits_music.txt"
+missFile = "miss_music.txt"
 srcFile = "train.txt"
 
 
@@ -30,18 +30,18 @@ def segword(sentence):
 	return s
 
 def train_frontend():
-	hitsFile = "hits.txt"
-	missFile = "miss.txt"
-	srcFile = "train.txt"
-
 	lines = readFile(srcFile)
-	hitlist = misslist = []
+	hitlist = []
+	misslist = []
 
 	for line in lines:
 		print "=============================================================="
 		print "Weibo: \n" + line
 		print ""
-		yn = raw_input("Is it about his music? (y/n): ")
+		yn = raw_input("Is it about his music? (y/n/q): ")
+		if yn == "q":
+			break
+
 		if yn == "y":
 			hitlist.append(line)
 		else:
@@ -52,8 +52,6 @@ def train_frontend():
 	return [len(hitlist), len(misslist)]
 
 def getTokensProbability(hsum, msum):
-	hitsFile = "hits.txt"
-	missFile = "miss.txt"
 	hitlist = readFile(hitsFile)
 	htoken = dict()
 	for hit in hitlist:

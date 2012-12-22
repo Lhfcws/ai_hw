@@ -116,7 +116,7 @@ def extractRawData(text, f):
         #print "\n"
     
 def main():
-    src="http://s.weibo.com/weibo/%25E6%259D%258E%25E4%25BB%25A3%25E6%25B2%25AB&scope=ori&page="
+    src="http://s.weibo.com/weibo/%25E6%25A2%2581%25E5%258D%259A&scope=ori&page="
 
     stopPageNum = 40
     for page in xrange(1, stopPageNum+1):
