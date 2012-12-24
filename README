@@ -12,7 +12,7 @@ This project can be downloaded on Github: https://github.com/Lhfcws/ai_hw
 2. Install splinter ( including lxml and selenium ) and MySQLdb for python:
 	- Linux(Strongly suggested):
 		# Take Ubuntu as an example. Fedora and Arch are similar to this, Fedora may use "python-pip" instead of "pip".
-		sudo apt-get install python-lxml python-pip cython python-mysqldb
+		sudo apt-get install python-lxml python-pip cython python-mysqldb python-pyquery
 		pip install splinter
 		pip install jieba
 
@@ -23,6 +23,7 @@ This project can be downloaded on Github: https://github.com/Lhfcws/ai_hw
 		splinter:	http://splinter.cobrateam.info/
 		mysqldb:	http://mysql-python.sourceforge.net/
 		jieba:		https://github.com/fxsjy/jieba	
+		pyquery:	http://pypi.python.org/pypi/pyquery
 
 		Download all above and install them for python on windows.
 
