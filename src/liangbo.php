@@ -10,7 +10,7 @@
 <script src="highchart/js/highcharts.js"></script>
 <script src="province_map.js"></script>
 <script type="text/javascript">
-	var chart,pie1,pie2;
+	var chart,pie1,pie2,pie3;
 	var date_prefix = '2012-09-';
 	var dateArr = eval(<?=$plots?>);
 	var stat = eval(<?=$stat?>);
@@ -143,6 +143,43 @@
                 data: pr
             }]
         });
+		//===========================
+		var ml = eval(<?=$ml?>);
+		console.log(ml);
+		pie3 = new Highcharts.Chart({
+            chart: {
+                renderTo: 'container3',
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            title: {
+                text: '关注原因'
+            },
+            tooltip: {
+        	    pointFormat: '{series.name}: <b>{point.percentage}%</b>',
+            	percentageDecimals: 1
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        color: '#000000',
+                        connectorColor: '#000000',
+                        formatter: function() {
+                            return '<b>'+ this.point.name +'</b>: '+ Highcharts.numberFormat(this.percentage, 2) +' %';
+                        }
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: '关注原因分布',
+				data: ml
+            }]
+        });
 	});
 </script>
 </head>
@@ -150,5 +187,6 @@
 <div id="container" style="width: 1300px;height: 800px; margin: 0 auto;"></div>
 <div id="container1" style="width: 660px;height: 600px; margin: 0 auto;"></div>
 <div id="container2" style="width: 660px;height: 600px; margin: 0 auto;"></div>
+<div id="container3" style="width: 660px;height: 600px; margin: 0 auto;"></div>
 </body>
 </html>

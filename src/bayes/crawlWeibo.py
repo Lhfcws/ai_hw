@@ -116,10 +116,8 @@ def extractRawData(text, f):
         #print "\n"
     
 def main():
-    src="http://s.weibo.com/weibo/%25E6%25A2%2581%25E5%258D%259A&scope=ori&page="
-
-    stopPageNum = 40
-    for page in xrange(1, stopPageNum+1):
+    src="http://s.weibo.com/weibo/%25E6%25A2%2581%25E5%258D%259A&scope=ori&timescope=custom:2012-10-01:2012-10-10&Refer=g&page="
+    for page in xrange(1, 51):
         f = open("uidlist","a")
         page = '%d' % page
         #url="http://s.weibo.com/weibo/%s&page=%s" % (keyword.encode('utf-8'), str(page))

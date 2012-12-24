@@ -241,12 +241,16 @@ class Main(AutoBrowserAction):
 		self.D = pq(self.br.html)
 		aa = self.D(".content > p > em").siblings("a")
 		userls = []
+		weibols = []
 		for i in range(len(aa)):
 			if aa.eq(i).attr("suda-data"):
 				p = aa.eq(i).attr("suda-data").split(':')
 				userls.append(p[1])
+				w = aa.eq(i).siblings("em").html()
+				ww = re.sub('</?\w+[^>]*>',"",w)
+				weibols.append(ww.strip())
 		
-		return userls
+		return [userls,weibols]
 			
 	# Judge if we meet a captcha.
 	def captcha(self):

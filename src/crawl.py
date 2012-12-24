@@ -60,9 +60,9 @@ def main():
 		stat = M.getUsers()	
 		
 		# Write the user list into database
-		for item in stat:
-			value = [item, M.getKeyword()]
-			cursor.execute("insert into users value(%s, %s)", value)
+		for i in range(len(stat[0])):
+			value = [stat[0][i], M.getKeyword(), stat[1][i]]
+			cursor.execute("insert into users value(%s, %s, %s)", value)
 
 		# Flip to next page.
 		M.flip()
