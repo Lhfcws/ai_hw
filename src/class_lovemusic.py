@@ -4,6 +4,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 from bayes.xmlOperation import get_xml_data
 from bayes import bayes 
+from bayes import transinger
 import dbconf
 import MySQLdb
 
@@ -24,6 +25,8 @@ def main():
 
 	P_H = P_H['hits']
 	P_M = P_M['miss']
+	#P_HT = transinger.main(P_HT, keyword)
+	#P_MT = transinger.main(P_MT, keyword)
 	lines = bayes.readFile("bayes/testFile.txt")
 	resList = []
 	for line in lines:

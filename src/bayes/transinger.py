@@ -86,7 +86,8 @@ def trans(dic, key1, key2):
 	
 	return pr
 
-def main(dic, keyword1, keyword2):
+def main(dic, keyword2):
+	keyword1 = "Áº²©"
 	dic[keyword2] = dic[keyword1]
 	dic.pop(keyword1)
 	keylist1 = kuworank.main(keyword1)
