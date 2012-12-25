@@ -11,6 +11,7 @@ from datetime import date
 import urllib
 import json
 import MySQLdb
+import re
 
 ##################
 # Encode Chinese characters into sina url encodings.
@@ -239,6 +240,7 @@ class Main(AutoBrowserAction):
 	# Get the user id list of the current page
 	def getUsers(self):
 		self.D = pq(self.br.html)
+		pre = re.compile("http[0-9|:|/| |.|a-z|A-Z]*")
 		aa = self.D(".content > p > em").siblings("a")
 		userls = []
 		weibols = []
@@ -248,6 +250,7 @@ class Main(AutoBrowserAction):
 				userls.append(p[1])
 				w = aa.eq(i).siblings("em").html()
 				ww = re.sub('</?\w+[^>]*>',"",w)
+				ww = re.sub(pre, "", ww)
 				weibols.append(ww.strip())
 		
 		return [userls,weibols]

@@ -65,6 +65,8 @@ def extractRawData(text, f):
        #'''
        #'''
         tweetContent=re_h.sub('',str(tweet[0]))
+		p = re.compile("http[0-9|:|/| |.|a-z|A-Z]*")
+		tweetContent = re.sub(p, "", tweetContent)
         print  tweetContent   #weibo内容
          
         author=soup2.findAll(has_nickname)[0].string
