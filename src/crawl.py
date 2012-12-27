@@ -39,7 +39,7 @@ def main():
 	M.clear()
 
 	# Test day
-	M.period("2012-09-27", "2012-09-27")
+	M.period("2012-09-20", "2012-09-20")
 
 	r = model(cursor)
 	key = r[1]

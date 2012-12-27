@@ -65,8 +65,10 @@ def extractRawData(text, f):
        #'''
        #'''
         tweetContent=re_h.sub('',str(tweet[0]))
-		p = re.compile("http[0-9|:|/| |.|a-z|A-Z]*")
-		tweetContent = re.sub(p, "", tweetContent)
+        p = re.compile("http[0-9|:|/| |.|a-z|A-Z]*")
+#        p1 = re.compile("(/?\w+[^)]*)")
+        tweetContent = re.sub(p, "", tweetContent)
+#       tweetContent = re.sub(p1, "", tweetContent)
         print  tweetContent   #weibo内容
          
         author=soup2.findAll(has_nickname)[0].string
@@ -118,7 +120,7 @@ def extractRawData(text, f):
         #print "\n"
     
 def main():
-    src="http://s.weibo.com/weibo/%25E6%25A2%2581%25E5%258D%259A&scope=ori&timescope=custom:2012-10-01:2012-10-10&Refer=g&page="
+    src="http://s.weibo.com/weibo/%25E6%25A2%2581%25E5%258D%259A&scope=ori&timescope=custom:2012-10-30:2012-10-30&Refer=g&page="
     for page in xrange(1, 51):
         f = open("uidlist","a")
         page = '%d' % page

@@ -7,11 +7,13 @@
 import crawl
 import plots
 from collect import collect
+import class_lovemusic 
 
 def main():
 	plots.main()
 	crawl.main()
-	#collect.main()
+	collect.main()
+	class_lovemusic.main()
 
 main()
 

@@ -16,8 +16,8 @@ from editdict import editDict
 from stopword import getStopwordList
 import dbconf
 
-hitsFile = "hits_music.txt"
-missFile = "miss_music.txt"
+hitsFile = "train_result/hits_music.txt"
+missFile = "train_result/miss_music.txt"
 srcFile = "train.txt"
 #stopword = getStopwordList()
 

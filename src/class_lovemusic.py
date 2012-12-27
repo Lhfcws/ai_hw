@@ -1,4 +1,4 @@
-#encoding=utf-8
+#-*- coding:utf-8 -*-
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -12,11 +12,16 @@ def bayes_init(keyword):
 	bayes.main(keyword)
 
 def main():
-	keyword = "Áº²©"
 	con = dbconf.dbconfig()
 	conn = MySQLdb.connect(host=con[0], user=con[1], passwd=con[2])
 	conn.select_db("ai_hw")
 	cursor = conn.cursor()
+	cursor.execute("SET NAMES 'utf8'")
+	conn.commit()
+	cursor.execute("SELECT * FROM `request` limit 1")
+	ls = cursor.fetchall()
+	keyword = ls[0][1]
+	print keyword
 
 	P_HT = get_xml_data("bayes/music_HT_dict.xml")
 	P_H = get_xml_data("bayes/music_H_dict.xml")
@@ -29,14 +34,19 @@ def main():
 	#P_MT = transinger.main(P_MT, keyword)
 	lines = bayes.readFile("bayes/testFile.txt")
 	resList = []
+	msl = []
 	for line in lines:
 		tokens = bayes.segword(line)
 		hitP = bayes.hitProbability(tokens, P_HT) * P_H
 		missP = bayes.missProbability(tokens, P_MT) * P_M
-		if missP < hitP:
+		if missP <= hitP:
 			resList.append(line)
+		else:
+			msl.append(line)
 
-	cursor.execute("insert into `music_love` values("+str(len(lines))+","+str(len(resList))+", "+keyword+")")
+	bayes.writeFile(resList, "bayes/testResult.txt")
+	bayes.writeFile(msl, "bayes/MisResult.txt")
+	cursor.execute("insert into `music_love` values("+str(len(lines))+","+str(len(resList))+", '"+keyword+"')")
 	conn.commit()
 	cursor.close()
 	conn.close()

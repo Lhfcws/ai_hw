@@ -36,7 +36,7 @@ def main():
 
 	# get Plots
 	#plot = trend(cursor, M, date(ls[1], ls[2], ls[3]), date(ls[4], ls[5], ls[6]))
-	plot = trend(cursor, M, date(2012,9,1), date(2012,9,30))
+	plot = trend(cursor, M, date(2012,9,20), date(2012,9,30))
 	conn.commit()
 
 	cursor.close()
