@@ -7,5 +7,3 @@ def main():
 	for line in lines:
 		kuworank.main(line.strip())
 	
-if __name__ == "__main__":
-	main()

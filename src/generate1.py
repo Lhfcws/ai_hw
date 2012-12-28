@@ -11,11 +11,11 @@ import class_lovemusic
 from finish import finish
 
 def main():
-	plots.main()
-	crawl.main()
+#	plots.main()
+#	crawl.main()
 #	collect.main()
-#	class_lovemusic.main()
-#	finish()
+	class_lovemusic.main()
+	finish()
 main()
 
 

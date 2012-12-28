@@ -12,7 +12,7 @@ from datetime import date
 
 def model(crs):
 	ls = []
-	crs.execute("select * from request")
+	crs.execute("select * from request order by id DESC limit 1")
 	ls = crs.fetchall()
 	return ls[0]
 #	crs.execute("delete from request limit 1")

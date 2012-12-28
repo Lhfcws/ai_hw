@@ -69,10 +69,11 @@ class Login(AutoBrowserAction):
 		self.user, self.pwd = username, password
 	
 	def login(self):
-		self.br.find_by_css('.name').first.fill(self.user)
-		self.br.find_by_css('.pass').first.fill(self.pwd)
-		self.br.find_by_css(".W_checkbox").click()
-		self.br.find_by_css(".W_btn_d").click()
+		elist = self.br.find_by_css('.W_input')
+		elist.first.fill(self.user)
+		(elist[1]).fill(self.pwd)
+		self.br.find_by_css(".W_checkbox").first.click()
+		self.br.find_by_css(".W_btn_g").first.click()
 
 		# Wait for the browser redirecting.
 
@@ -264,7 +265,7 @@ class Main(AutoBrowserAction):
 	# Save current stoppage
 	def save(self):
 		f = open("stoppage","w")
-		f.write(self.stoppage)
+		f.write(str(self.stoppage))
 		f.close()
 	
 	# Load stoppage which was saved.

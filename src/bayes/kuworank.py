@@ -12,7 +12,7 @@ def sina_urlencode(s):
 
 def initUrl(keyword):
 	keyword = urllib.quote(keyword)
-	return "http://www.kuwo.cn/mingxing/" + keyword + "/music.htm"
+	return "http://www.kuwo.cn/mingxing/" + keyword
 
 def exist(lis, name):
 	for l in lis:
@@ -41,6 +41,15 @@ def insert_once(name, value, dic):
 	bo = not dic.has_key(name)
 	if bo:
 		dic[name] = int(value)
+		f = open("bayes/user.dict",'r')
+		lines = f.readlines()
+		lines = [(lp.split(' '))[0] for lp in lines]
+		f.close()
+		name = (name.split(' '))[0]
+		if not exist(lines, name):
+			f = open("bayes/user.dict",'a')
+			f.write(name +" 3\n")
+			f.close()
 	else:
 	 	dic[name] += int(value)
 
@@ -59,14 +68,16 @@ def writeFile(keyword, inv):
 	f.write(' ]}')
 	f.close()
 
+
 def getWeiboRank(keyword, res):
 	src = "http://s.weibo.com/weibo/"
 	suff= "&scope=ori"
 	dd = dict()
-	cnt = 0
+	cnt = 1
 	for r in res:
-		if cnt>10:
+		if cnt>=10:
 			break
+		print cnt,r
 		key = sina_urlencode(keyword) + '%2520' + sina_urlencode(r.encode("utf-8"))
 		print src+key+suff
 		D = pq(url=src+key+suff)
@@ -78,7 +89,10 @@ def getWeiboRank(keyword, res):
 			continue
 		st = p.search(text)
 		st = st.group()
+		print st
 		lis = st.split()
+		if len(lis) == 1:
+			continue
 		print lis
 		lis = lis[1].split(',')
 

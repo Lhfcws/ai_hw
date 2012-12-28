@@ -1,4 +1,7 @@
 #encoding=utf-8
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 import kuworank
 import math
 import numpy
@@ -11,7 +14,8 @@ def f(i, x):
 	return x**i
 
 def leastSquareSolve(xa, ya):
-	ORDER = 10
+	global ORDER
+	ORDER = len(xa)
 	Y = numpy.array(ya)
 	matf = []
 	for x in xa:
@@ -60,20 +64,20 @@ def trans(dic, key1, key2):
 	#pr = sortDictByKey1(pr, key1)
 	xa = []
 	ya = []
-	for i in range(1, len(pr)+1):
-		if pr[key1[i]] != -1:
+	for i in range(1, len(key1)+1):
+		if pr[key1[i-1]] != -1:
 			xa.append(i)
-			ya.append(pr[key1[i]])
+			ya.append(pr[key1[i-1]])
 	
 	C = leastSquarePrepare(xa, ya)
 
-	for i in range(1, len(pr)+1):
+	for i in range(1, len(key1)+1):
 		if pr[key1[i-1]] == -1:
 			pr[key1[i-1]] = leastSquare(i, C)
 	
 	longer = False
 	for i in range(len(key1)):
-		if len(key2) < i:
+		if len(key2) <= i:
 			longer = True
 			break
 		pr[key2[i]] = pr[key1[i]]
@@ -87,10 +91,11 @@ def trans(dic, key1, key2):
 	return pr
 
 def main(dic, keyword2):
-	keyword1 = "Áº²©"
-	dic[keyword2] = dic[keyword1]
+	#print dic
+	keyword1 = u"\u6881\u535a"
+	dic[keyword2.decode("utf-8")] = dic[keyword1]
 	dic.pop(keyword1)
-	keylist1 = kuworank.main(keyword1)
+	keylist1 = kuworank.main(keyword1.encode("utf-8"))
 	keylist2 = kuworank.main(keyword2)
 	pr = trans(dic, keylist1, keylist2)
 	return pr

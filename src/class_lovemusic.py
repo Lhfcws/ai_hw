@@ -18,7 +18,7 @@ def main():
 	cursor = conn.cursor()
 	cursor.execute("SET NAMES 'utf8'")
 	conn.commit()
-	cursor.execute("SELECT * FROM `request` limit 1")
+	cursor.execute("SELECT * FROM `request` order by id desc limit 1")
 	ls = cursor.fetchall()
 	keyword = ls[0][1]
 	print keyword
@@ -30,9 +30,16 @@ def main():
 
 	P_H = P_H['hits']
 	P_M = P_M['miss']
-	#P_HT = transinger.main(P_HT, keyword)
-	#P_MT = transinger.main(P_MT, keyword)
-	lines = bayes.readFile("bayes/testFile.txt")
+	P_HT = transinger.main(P_HT, keyword)
+	P_MT = transinger.main(P_MT, keyword)
+
+	#lines = bayes.readFile("bayes/testFile.txt")
+	cursor.execute("SELECT weibo FROM `users` WHERE users.keyword = '"+keyword+"'")
+	ls = cursor.fetchall()
+	lines = []
+	for i in range(len(ls)):
+		lines.append(ls[i][0])
+
 	resList = []
 	msl = []
 	for line in lines:
@@ -40,9 +47,9 @@ def main():
 		hitP = bayes.hitProbability(tokens, P_HT) * P_H
 		missP = bayes.missProbability(tokens, P_MT) * P_M
 		if missP <= hitP:
-			resList.append(line)
+			resList.append(line+'\n')
 		else:
-			msl.append(line)
+			msl.append(line+'\n')
 
 	bayes.writeFile(resList, "bayes/testResult.txt")
 	bayes.writeFile(msl, "bayes/MisResult.txt")

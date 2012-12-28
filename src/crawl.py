@@ -3,15 +3,18 @@
 # author: Lhfcws Wu [ 10389393 Wenjie Wu ]
 # Copyright: Lhfcws
 # Version: 1.0
-
+import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
 from uglysina import Main
 #from finish import finish
 import MySQLdb
+import re
 from dbconf import dbconfig
 from datetime import date
 
 def model(crs):
-	crs.execute("select * from request")
+	crs.execute("select * from request ORDER BY id desc limit 1")
 	rids = crs.fetchall()
 	result = []
 	return rids[0]
@@ -25,7 +28,7 @@ def model(crs):
 		result.append(ls)
 '''
 def main():
-
+	p = re.compile("http[0-9|:|/| |.|a-z|A-Z]*")
 	# connect MYSQL
 	res = dbconfig()
 	conn = MySQLdb.connect(host=res[0], user=res[1], passwd=res[2])
@@ -46,7 +49,11 @@ def main():
 	M.keyword(r[1])
 	M.config()
 
+	stop = 0
 	while True:
+		if stop == 10:
+			break
+		stop += 1
 		if M.end():
 			break
 		# If we meet a captcha we can solve it by login.
@@ -61,7 +68,8 @@ def main():
 		
 		# Write the user list into database
 		for i in range(len(stat[0])):
-			value = [stat[0][i], M.getKeyword(), stat[1][i]]
+			value = [stat[0][i], M.getKeyword(), stat[1][i].encode("utf-8")]
+			value[2] = re.sub(p,"",value[2])
 			cursor.execute("insert into users value(%s, %s, %s)", value)
 
 		# Flip to next page.
@@ -69,9 +77,10 @@ def main():
 
 		conn.commit()
 
+	M.quit()
 	value = [M.getKeyword()]
 	#cursor.execute("delete from request where keyword='%s'",value);
-	cursor.execute("insert into finish value(%s)", value);
-	conn.commit()
+	#cursor.execute("insert into finish value(%s)", value);
+	#conn.commit()
 	cursor.close()
 	conn.close()
