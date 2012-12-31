@@ -41,13 +41,14 @@ def insert_once(name, value, dic):
 	bo = not dic.has_key(name)
 	if bo:
 		dic[name] = int(value)
-		f = open("bayes/user.dict",'r')
+		f = open("/home/lhfcws/coding/projects/web/ai_hw/src/bayes/user.dict",'r')
 		lines = f.readlines()
 		lines = [(lp.split(' '))[0] for lp in lines]
 		f.close()
 		name = (name.split(' '))[0]
+		name = name.encode('utf-8')
 		if not exist(lines, name):
-			f = open("bayes/user.dict",'a')
+			f = open("/home/lhfcws/coding/projects/web/ai_hw/src/bayes/user.dict",'a')
 			f.write(name +" 3\n")
 			f.close()
 	else:

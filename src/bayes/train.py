@@ -16,35 +16,11 @@ from editdict import editDict
 from stopword import getStopwordList
 import dbconf
 
-hitsFile = "train_result/hits_music.txt"
-missFile = "train_result/miss_music.txt"
+hitsFile = "hits_music.txt"
+missFile = "miss_music.txt"
 srcFile = "train.txt"
-stopword = getStopwordList()
+#stopword = getStopwordList()
 
-def idf(N, C_Ti, N_Ti):
-	return math.log(N*float(C_Ti)/N_Ti)
-
-def sortDict(d):
-	items = d.items()
-	inv = [(v[1],v[0]) for v in items]
-	inv.sort(reverse=True)
-	return dict(inv)
-
-def getSum():
-	l1 = readFile(srcFile)
-	l2 = readFile(srcFile)
-	return [len(l1), len(l2)]
-
-def abandon(d):
-	l = len(d)
-	l = math.trunc(l*0.9)
-	dd = d 
-	k = d.keys()
-	for i in range(l+1):
-		dd.pop(k[i])
-	
-	return dd
-	
 def readFile(filename):
 	f = open(filename, 'r')
 	lines = f.readlines()
@@ -93,98 +69,40 @@ def train_frontend():
 	writeFile(misslist, missFile)	
 	return [len(hitlist), len(misslist)]
 
-def merge(d1, d2):
-	for d in d2.keys():
-		if d1.has_key(d):
-			d2[d] += d1[d]
-	
-	return dict(d1, **d2)
-
-def xorDict(d1, d2):
-	for k in d2.keys():
-		if d1.has_key(k):
-			d1.pop(k)
-
-	return d1
-
-def calcSum(d):
-	sm = 0
-	for k in d.keys():
-		v = int(d[k])
-		sm += v
-	return sm
-
-def getTokensProbability():
-	keyword = readFile("trainKeyword")
-	keyword = keyword[0]
-	print keyword
+def getTokensProbability(hsum, msum):
 	hitlist = readFile(hitsFile)
 	htoken = dict()
 	for hit in hitlist:
 		hl = segword(hit)
 		for word in hl:
-			if word == keyword:
-				continue
 			if htoken.has_key(word):
 				htoken[word] += 1
 			else:
-				htoken[word] = 1
+				htoken[word] = 0
 	
 	P_TH = dict()
-	hsum = calcSum(htoken)
 
-	for key in htoken.keys():
+	for key in htoken:
 		P_TH[key] = float(htoken[key]) / float(hsum)
 	
 
 	misslist = readFile(missFile)
 	mtoken = dict()
 	for mis in misslist:
-		ml = segword(mis)
-		for word in ml:
-			if word == keyword:
-				continue
+		hl = segword(mis)
+		for word in hl:
 			if mtoken.has_key(word):
 				mtoken[word] += 1
 			else:
-				mtoken[word] = 1
+				mtoken[word] = 0
 	
 	P_TM = dict()
-	msum = calcSum(mtoken)
 
-	for key in mtoken.keys():
+	for key in mtoken:
 		P_TM[key] = float(mtoken[key]) / float(msum)
 
-	tokens = merge(htoken, mtoken)
-	hidf = {}
-	midf = {}
-	N = getSum()
-	N = N[0] + N[1]
-	for ti in tokens.keys():
-		if not P_TH.has_key(ti):
-			hidf[ti] = 0
-		else:
-			hidf[ti] = P_TH[ti] * idf(N, htoken[ti], tokens[ti])
 
-		if not P_TM.has_key(ti):
-			midf[ti] = 0
-		else:
-			midf[ti] = P_TM[ti] * idf(N, mtoken[ti], tokens[ti])
-
-	hidf = abandon(sortDict(hidf))
-	midf = abandon(sortDict(midf))
-	P_TH = xorDict(P_TH, hidf)
-	P_TM = xorDict(P_TM, midf)
-	htoken = xorDict(htoken, hidf)
-	mtoken = xorDict(mtoken, midf)
-	tokens = merge(htoken, mtoken)
-	
-	store = {}
-	store['V'] = len(tokens)
-	store['sum_htoken'] = calcSum(htoken)
-	store['sum_mtoken'] = calcSum(mtoken)
-
-	return [P_TH, P_TM, store]
+	return [P_TH, P_TM]
 
 # Bayesian Probability 
 def getP_HT(P_H, P_M, P_TH, P_TM):
@@ -198,9 +116,9 @@ def getP_HT_Table(hsum, msum, P_TH, P_TM):
 	for token in P_TH:
 		# Laplace Correction
 		if not(P_TH.has_key(token)) or P_TH[token] == 0:
-			P_TH[token] = 1.0/hsum
+			P_TH[token] = 0.5
 		if not(P_TM.has_key(token)) or P_TM[token] == 0:
-			P_TM[token] = 1.0/msum
+			P_TM[token] = 0.5
 
 		#print P_H,P_M, P_TH[token], P_TM[token]
 		P_HT[token] = getP_HT(P_H, P_M, P_TH[token], P_TM[token])
@@ -220,59 +138,57 @@ def getP_MT_Table(hsum, msum, P_TH, P_TM):
 	for token in P_TM:
 		# Laplace Correction
 		if not(P_TH.has_key(token)) or P_TH[token] == 0:
-			P_TH[token] = 1.0/hsum
+			P_TH[token] = 0.5
 		if not(P_TM.has_key(token)) or P_TM[token] == 0:
-			P_TM[token] = 1.0/msum
+			P_TM[token] = 0.5
 
 		P_MT[token] = getP_MT(P_H, P_M, P_TH[token], P_TM[token])
 		
 	return P_MT
 
-def hitProbability(tokens, P_HT, P_MT, P_H, P_M, store):
+def hitProbability(tokens, P_HT):
 	res = 0
-	s1 = P_H
-	s2 = P_M
+	s1 = 1
+	s2 = 1
 	for token in tokens:
-		if token in stopword:
-			continue
 		if not(P_HT.has_key(token)) or P_HT[token] == 0:
-			P_HT[token] = (1.0)/float(store['V'] + store['sum_htoken'])
-		if not(P_MT.has_key(token)) or P_MT[token] == 0:
-			P_MT[token] = (1.0)/float(store['V'] + store['sum_mtoken'])
+			P_HT[token] = 0.5
 		if P_HT[token] < 0:
 			continue
 		s1 *= float(P_HT[token])
-		s2 *= float(P_MT[token])
+		s2 *= float(1 - P_HT[token])
 
 	return s1 / ( s1 + s2 )
 
-def missProbability(tokens, P_HT, P_MT, P_H, P_M, store):
+def missProbability(tokens, P_MT):
 	res = 0
-	s1 = P_M
-	s2 = P_H
+	s1 = 1
+	s2 = 1
 	for token in tokens:
-		if token in stopword:
-			continue
 		if not(P_MT.has_key(token)) or P_MT[token] == 0:
-			P_MT[token] = (1.0)/float(store['V'] + store['sum_mtoken'])
-		if not(P_HT.has_key(token)) or P_HT[token] == 0:
-			P_HT[token] = (1.0)/float(store['V'] + store['sum_htoken'])
+			P_MT[token] = 0.5
 		if P_MT[token] < 0:
 			continue
 		s1 *= float(P_MT[token])
-		s2 *= float(P_HT[token])
+		s2 *= float(1 - P_MT[token])
 
 	return s1 / ( s1 + s2 )
 
+def getSum():
+	l1 = readFile("hits_music.txt")
+	l2 = readFile("miss_music.txt")
+	return [len(l1), len(l2)]
+
 def init(keyword, songlist):
 	# training
-	#hsum, msum = train_frontend()
-	P_TH, P_TM, store = getTokensProbability()
-	hsum, msum = store['sum_htoken'], store['sum_mtoken']
+	hsum, msum = train_frontend()
+	#hsum, msum = getSum()
+	'''
 	P_H = float(hsum) / float(hsum + msum)
 	P_M = float(msum) / float(hsum + msum)
 
 	# Bayesian Calculate
+	P_TH, P_TM = getTokensProbability(hsum, msum)
 	P_HT = getP_HT_Table(hsum, msum, P_TH, P_TM)
 	P_MT = getP_MT_Table(hsum, msum, P_TH, P_TM)
 	P_HT[keyword] = -2;
@@ -287,23 +203,22 @@ def init(keyword, songlist):
 		P_HT[song] = math.sqrt(100*P_HT[song]) / 10.0
 		P_MT[song] = (10*P_MT[song])**2 / 100.0
 
-	return [P_HT, P_MT, P_H, P_M, hsum, msum, store]
+	return [P_HT, P_MT, P_H, P_M, hsum, msum]
+	'''
 
 # ================MAIN=====================
 def main():
-	keyword = "梁博"
-	songlist = kuworank.main(keyword)
-	editDict(songlist)
-
-	P_HT, P_MT, P_H, P_M, hsum, msum, store = init(keyword, songlist)
+#	keyword = "梁博"
+#	songlist = kuworank.main(keyword)
+#	editDict(songlist)
+#	P_HT, P_MT, P_H, P_M, hsum, msum = init(keyword, songlist)
+	hsum, msum = train_frontend()
 	
+'''
 	xmlOperation.create_xml(P_HT, "music_HT_dict.xml");
 	xmlOperation.create_xml({'hits':P_H}, "music_H_dict.xml");
 	xmlOperation.create_xml(P_MT, "music_MT_dict.xml");
 	xmlOperation.create_xml({'miss':P_M}, "music_M_dict.xml");
-	xmlOperation.create_xml(store, "store.xml");
-	
-	'''
 	con = dbconf.dbconfig()
 	conn = MySQLdb.connect(host=con[0], user=con[1], passwd=con[2])
 	conn.select_db("ai_hw")
@@ -312,8 +227,6 @@ def main():
 	P_H = get_xml_data("music_H_dict.xml")
 	P_MT = get_xml_data("music_MT_dict.xml")
 	P_M = get_xml_data("music_M_dict.xml")
-	'''
-	'''
 	lines = readFile("testFile.txt")
 	resList = []
 	hl = []
@@ -332,8 +245,6 @@ def main():
 	writeFile([str(len(lines))+"\n", len(resList)], "result.txt")
 	writeFile(hl, "result_hits.txt")
 	writeFile(ml, "result_miss.txt")
-	'''
-	'''
 	cursor.execute("insert into `music_love` values('"+len(lines)"','"+len(resList)+"')")
 	cursor.close()
 	conn.close()

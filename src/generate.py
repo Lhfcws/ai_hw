@@ -7,13 +7,14 @@
 import crawl
 import plots
 #from collect.collect import collect
+from collectdemo.collect import collect
 import class_lovemusic 
 from finish import finish
 
 def main():
 	plots.main()
 	crawl.main()
-#	collect.main()
+	collect.main()
 #	class_lovemusic.main()
 #	finish()
 main()

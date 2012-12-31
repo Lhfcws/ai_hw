@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<catalog>
+	<maxid>3</maxid>
+	<item>
+		<index>sum_htoken</index>
+		<frequency>24996</frequency>
+	</item>
+	<item>
+		<index>sum_mtoken</index>
+		<frequency>94687</frequency>
+	</item>
+	<item>
+		<index>V</index>
+		<frequency>9850</frequency>
+	</item>
+</catalog>
