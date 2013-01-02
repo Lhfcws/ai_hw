@@ -244,7 +244,8 @@ def hitProbability(tokens, P_HT, P_MT, P_H, P_M, store):
 		s1 *= float(P_HT[token])
 		s2 *= float(P_MT[token])
 
-	return s1 / ( s1 + s2 )
+#	return s1 / ( s1 + s2 )
+	return s1
 
 def missProbability(tokens, P_HT, P_MT, P_H, P_M, store):
 	res = 0
@@ -262,7 +263,8 @@ def missProbability(tokens, P_HT, P_MT, P_H, P_M, store):
 		s1 *= float(P_MT[token])
 		s2 *= float(P_HT[token])
 
-	return s1 / ( s1 + s2 )
+	#return s1 / ( s1 + s2 )
+	return s2
 
 def init(keyword, songlist):
 	# training
