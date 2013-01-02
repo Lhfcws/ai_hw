@@ -6,8 +6,8 @@
 
 import crawl
 import plots
-#from collect.collect import collect
-from collectdemo.collect import collect
+#from collect.collect import main
+from collectdemo.collect import main
 import class_lovemusic 
 from finish import finish
 
