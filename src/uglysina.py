@@ -70,10 +70,17 @@ class Login(AutoBrowserAction):
 	
 	def login(self):
 		elist = self.br.find_by_css('.W_input')
-		elist.first.fill(self.user)
-		(elist[1]).fill(self.pwd)
-		self.br.find_by_css(".W_checkbox").first.click()
-		self.br.find_by_css(".W_btn_g").first.click()
+		if not elist.is_empty():
+			elist.first.fill(self.user)
+			(elist[1]).fill(self.pwd)
+			self.br.find_by_css(".W_checkbox").first.click()
+			self.br.find_by_css(".W_btn_g").first.click()
+		else:
+			self.br.find_by_css(".name").first.fill(self.user)
+			self.br.find_by_css(".pass").first.fill(self.pwd)
+			self.br.find_by_css(".W_checkbox").first.click()
+			self.br.find_by_css(".W_btn_d").first.click()
+
 
 		# Wait for the browser redirecting.
 
