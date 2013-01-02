@@ -12,7 +12,7 @@ This project can be downloaded on Github: https://github.com/Lhfcws/ai_hw
 2. Install splinter ( including lxml and selenium ) and MySQLdb for python:
 	- Linux(Strongly suggested):
 		# Take Ubuntu as an example. Fedora and Arch are similar to this, Fedora may use "python-pip" instead of "pip".
-		sudo apt-get install python-lxml python-pip cython python-mysqldb python-pyquery
+		sudo apt-get install python-lxml python-pip cython python-mysqldb python-pyquery python-numpy
 		pip install splinter
 		pip install jieba
 
@@ -24,6 +24,7 @@ This project can be downloaded on Github: https://github.com/Lhfcws/ai_hw
 		mysqldb:	http://mysql-python.sourceforge.net/
 		jieba:		https://github.com/fxsjy/jieba	
 		pyquery:	http://pypi.python.org/pypi/pyquery
+		numpy:		http://www.scipy.org/
 
 		Download all above and install them for python on windows.
 
@@ -36,7 +37,8 @@ This project can be downloaded on Github: https://github.com/Lhfcws/ai_hw
 	# database username
 	# database password
 
-2. Check the configuration in src/collect for weibo API module, for example:
+2. Import src/ai_hw.sql. May be it's neccesary to create a DATABASE first.
+3. Check the configuration in src/collect for weibo API module, for example:
 
 	accessKey.conf
 		line 1: 30218xxxxx ----Your Weibo developer App Key
@@ -53,10 +55,14 @@ This project can be downloaded on Github: https://github.com/Lhfcws/ai_hw
 		line 4: ai_hw ----the database's name
 		line 5: utf8 ----coding format
 
-3. Import src/ai_hw.sql. May be it's neccesary to create a DATABASE first.
-4. Demo:
-	open liangbo.php to see the demo graph.
+4. ***2 Demos:				*** IMPORTANT
+	1) Open liangbo.php to see the demo graph. [Without Running Python Scripts]
+	2) Or after configuration well, you can just run generate.py first. 
+	   Then after generate.py finished, please run generate1.py. 
+	   ** You may meet the captcha here, just open a search page in http://s.weibo.com and input the captcha by human.
+	   Then run generate1.py again, it should be done!
 
+***** The following steps are for the release version. We're sorry to tell you that now we just post the demo version.
 5. Open index.php, make sure session can be used in your php.
 6. Input a star's name you wanted to know about.
 7. After seeing the wait.php page, run generate.py to generate the data.
