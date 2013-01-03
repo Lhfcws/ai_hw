@@ -11,12 +11,12 @@ from collectdemo.collect import main
 import class_lovemusic 
 from finish import finish
 
-def main():
+def mainjj():
 	plots.main()
 	crawl.main()
-	collect.main()
+	main()
 #	class_lovemusic.main()
 #	finish()
-main()
+mainjj()
 
 

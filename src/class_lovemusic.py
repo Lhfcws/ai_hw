@@ -47,7 +47,7 @@ def main():
 		tokens = bayes.segword(line)
 		hitP = bayes.hitProbability(tokens, P_HT, P_MT, P_H, P_M, store)
 		missP = bayes.missProbability(tokens, P_HT, P_MT, P_H, P_M, store)
-		if missP/hitP > 10.0:
+		if missP/ hitP < 10.0:
 			resList.append(line+'\n')
 		else:
 			msl.append(line+'\n')

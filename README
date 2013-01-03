@@ -55,15 +55,14 @@ This project can be downloaded on Github: https://github.com/Lhfcws/ai_hw
 		line 4: ai_hw ----the database's name
 		line 5: utf8 ----coding format
 
-4. *** Two Demos:				*** IMPORTANT
+4. ***2 Demos:				*** IMPORTANT
 	1) Open liangbo.php to see the demo graph. [Without Running Python Scripts]
-	2) Or after configuration well, do STEP 6 && STEP 7 first.
+	2) Or after configuration well, you can just run generate.py first. 
 	   Then after generate.py finished, please run generate1.py. 
 	   ** You may meet the captcha here, just open a search page in http://s.weibo.com and input the captcha by human.
 	   Then run generate1.py again, it should be done!
 
-***** The following steps are for the release version. We're sorry to tell you that now we just post the demo version.  ****
-
+***** The following steps are for the release version. We're sorry to tell you that now we just post the demo version.
 5. Open index.php, make sure session can be used in your php.
 6. Input a star's name you wanted to know about.
 7. After seeing the wait.php page, run generate.py to generate the data.

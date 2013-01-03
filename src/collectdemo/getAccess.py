@@ -4,6 +4,8 @@
 import sys
 import webbrowser
 import urllib, httplib
+import os
+path = os.path.dirname(__file__)
 
 from weibo import APIClient
 
@@ -12,7 +14,7 @@ def getAccess():
     PASSWORD = "aiai2012"
     
     # get configure from file
-    accessFile = open( "accessKey.conf", "r" )
+    accessFile = open( path+"/accessKey.conf", "r" )
     values = accessFile.readlines()
     accessFile.close()
 

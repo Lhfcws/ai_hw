@@ -2,10 +2,12 @@
 # version: 1.0
 
 import MySQLdb
+import os
+path = os.path.dirname(__file__)
 
 def setFollows( user, key ):
     try:
-        serverFile = open( "server.conf", "r" )
+        serverFile = open( path+"/server.conf", "r" )
         values = serverFile.readlines()
         serverConf = []
         for value2 in values:

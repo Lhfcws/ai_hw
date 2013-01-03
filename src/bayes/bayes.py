@@ -8,6 +8,8 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 sys.path.append('..')
+import os
+path = os.path.dirname(__file__)
 import jieba
 import math
 import xmlOperation
@@ -58,7 +60,7 @@ def writeFile(lis, filename):
 	f.close()
 
 def segword(sentence):
-	jieba.load_userdict("/home/lhfcws/coding/projects/web/ai_hw/src/bayes/user.dict")
+	jieba.load_userdict(path+"/user.dict")
 	seg_list = jieba.cut(sentence, cut_all=False)
 	s = ','.join(seg_list)
 	s = s.split(',')

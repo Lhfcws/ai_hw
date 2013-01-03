@@ -4,6 +4,8 @@
 from pyquery import PyQuery as pq
 import urllib
 import re
+import os
+path = os.path.dirname(__file__)
 
 def sina_urlencode(s):
 	reprStr = repr(s).replace(r'\x', '%25')
@@ -41,14 +43,14 @@ def insert_once(name, value, dic):
 	bo = not dic.has_key(name)
 	if bo:
 		dic[name] = int(value)
-		f = open("/home/lhfcws/coding/projects/web/ai_hw/src/bayes/user.dict",'r')
+		f = open(path+"/user.dict",'r')
 		lines = f.readlines()
 		lines = [(lp.split(' '))[0] for lp in lines]
 		f.close()
 		name = (name.split(' '))[0]
 		name = name.encode('utf-8')
 		if not exist(lines, name):
-			f = open("/home/lhfcws/coding/projects/web/ai_hw/src/bayes/user.dict",'a')
+			f = open(path+"/user.dict",'a')
 			f.write(name +" 3\n")
 			f.close()
 	else:

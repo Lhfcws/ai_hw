@@ -7,6 +7,8 @@ import string
 from getAccess import getAccess
 from getUids import getUids
 from setFollows import setFollows
+import os
+path = os.path.dirname(__file__)
 
 def main():
     # get access client
@@ -14,7 +16,7 @@ def main():
     uids = getUids()
     tempMark = 0
 
-    mark = open( "mark.conf", "r" )
+    mark = open( path+"/mark.conf", "r" )
     start = string.atoi( mark.readline() )
     mark.close()
     try:
