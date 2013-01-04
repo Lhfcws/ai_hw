@@ -18,9 +18,9 @@ While using splinter, the app will automatically keep popping out the browser an
 
 2. Install splinter ( including lxml and selenium ) and MySQLdb for python:
 
-	- Linux(Strongly suggested):
+	+ ####Linux(Strongly suggested):
 
-		**Take Ubuntu as an example. Fedora and Arch are similar to this, Fedora may use "python-pip" instead of "pip".**
+		*Take Ubuntu as an example. Fedora and Arch are similar to this, Fedora may use "python-pip" instead of "pip".*
 
 			sudo apt-get install python-lxml python-pip cython python-mysqldb python-pyquery python-numpy
 
@@ -28,7 +28,7 @@ While using splinter, the app will automatically keep popping out the browser an
 
 			pip install jieba
 
-	- Windows(not recommend):
+	+ ####Windows(not recommend):
 
 		Cython: 	<http://download.csdn.net/detail/feisan/4301293>
 
@@ -97,16 +97,16 @@ While using splinter, the app will automatically keep popping out the browser an
 
 	2) Or after configuration well, you can do the following steps to go through the whole procedure. 
 
-		Input a star's name you wanted to know about.
+	>Input a star's name you wanted to know about.
 
-		After seeing the wait.php page, run generate.py to generate the data.
+	>After seeing the wait.php page, run generate.py to generate the data.
 
-	   	Then after **generate.py** finished, please run **generate1.py**. 
+	>Then after **generate.py** finished, please run **generate1.py**. 
 
-	   > **You may meet the captcha here, just open a search page in <http://s.weibo.com> (such as <http://s.weibo.com/weibo/ai>) and input the captcha by human.
-	   Then run generate1.py again, it should be done!**
+	   > _You may meet the captcha here, just open a search page in <http://s.weibo.com> (such as <http://s.weibo.com/weibo/ai>) and input the captcha by human.
+	   Then run generate1.py again, it should be done!_
 
-	   	Go to **index.php** in Browser and input the star name again, it should show you **graph.php**, containing lines graph and pie graphs.
+	>Go to **index.php** in Browser and input the star name again, it should show you **graph.php**, containing lines graph and pie graphs.
 
 ###The following steps are for the release version. We're sorry to tell you that now we just post the demo version.
 
