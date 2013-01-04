@@ -57,10 +57,12 @@ This project can be downloaded on Github: https://github.com/Lhfcws/ai_hw
 
 4. ***2 Demos:				*** IMPORTANT
 	1) Open liangbo.php to see the demo graph. [Without Running Python Scripts]
-	2) Or after configuration well, you can just run generate.py first. 
+	2) Or after configuration well, you can do the STEP 6 && 7 first. 
 	   Then after generate.py finished, please run generate1.py. 
 	   ** You may meet the captcha here, just open a search page in http://s.weibo.com and input the captcha by human.
 	   Then run generate1.py again, it should be done!
+
+	   Go to index.php in Browser and input the star name again, it should show you graph.php, containing lines graph and pie graphs.
 
 ***** The following steps are for the release version. We're sorry to tell you that now we just post the demo version.
 5. Open index.php, make sure session can be used in your php.
