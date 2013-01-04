@@ -26,7 +26,6 @@ While using splinter, the app will automatically keep popping out the browser an
 			pip install splinter
 
 			pip install jieba
-
 	+ ####Windows(not recommend):
 
 		Cython: 	<http://download.csdn.net/detail/feisan/4301293>
