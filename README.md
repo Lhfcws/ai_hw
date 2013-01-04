@@ -8,8 +8,9 @@ We use splinter to get the webpage source and avoid the captcha.
 While using splinter, the app will automatically keep popping out the browser and automatically close it. Meanwhile, users are supposed not to operate the computer in order to ensure the stability of splinter, especially not to operate the firefox browser popped out by the webdriver. 
 
 
-###This project can be downloaded on Github: <https://github.com/Lhfcws/ai_hw>
+-> _See docs in_ **ai_hw/doc**
 #### Gain a better experience in reading README.md:   <https://github.com/Lhfcws/ai_hw/blob/master/README.md>
+###This project can be downloaded on Github: <https://github.com/Lhfcws/ai_hw>
 
 # Installation
 ### Strongly suggest you to run in Linux.
