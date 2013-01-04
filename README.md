@@ -17,8 +17,7 @@ While using splinter, the app will automatically keep popping out the browser an
 1. Make sure you have apache(or any server can run php), python 2.7.
 
 2. Install splinter ( including lxml and selenium ) and MySQLdb for python:
-
-	+ ####Linux(Strongly suggested):
++ ####Linux(Strongly suggested):
 
 		*Take Ubuntu as an example. Fedora and Arch are similar to this, Fedora may use "python-pip" instead of "pip".*
 
@@ -28,7 +27,7 @@ While using splinter, the app will automatically keep popping out the browser an
 
 			pip install jieba
 
-	+ ####Windows(not recommend):
++ ####Windows(not recommend):
 
 		Cython: 	<http://download.csdn.net/detail/feisan/4301293>
 
