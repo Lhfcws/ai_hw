@@ -2,7 +2,7 @@
 #encoding=utf-8
 
 # P(H|T) = P(T|H)*P(H) / (P(T|H)*P(H) + P(T|M)*P(M))								Bayesian Law
-# P(H|t1 ,t2, t3……tn) = (P1*P2*……PN) / [P1*P2*……PN + (1-P1)*(1-P2)*……(1-PN)] 		Compound Probability
+# P(H|t1 ,t2, t3……tn) = argmax (P1*P2*……PN) * P_H						 			Argmax Probability
 
 import sys
 reload(sys)
@@ -23,20 +23,24 @@ missFile = "train_result/miss_music.txt"
 srcFile = "train.txt"
 stopword = getStopwordList()
 
+# idf formula
 def idf(N, C_Ti, N_Ti):
 	return math.log(N*float(C_Ti)/N_Ti)
 
+# Sort a dict by values
 def sortDict(d):
 	items = d.items()
 	inv = [(v[1],v[0]) for v in items]
 	inv.sort(reverse=True)
 	return dict(inv)
 
+# Get total amount of hits weibo and miss weibo
 def getSum():
-	l1 = readFile(srcFile)
-	l2 = readFile(srcFile)
+	l1 = readFile(hitsFile)
+	l2 = readFile(missFile)
 	return [len(l1), len(l2)]
 
+# Drop the 10% lowest tf-idf tokens.
 def abandon(d):
 	l = len(d)
 	l = math.trunc(l*0.9)
@@ -46,19 +50,22 @@ def abandon(d):
 		dd.pop(k[i])
 	
 	return dd
-	
+
+# Read file 
 def readFile(filename):
 	f = open(filename, 'r')
 	lines = f.readlines()
 	f.close()
 	return lines
 
+# Write file
 def writeFile(lis, filename):
 	f = open(filename, 'w')
 	for l in lis:
 		f.write(str(l))
 	f.close()
 
+# Cut the weibo into words.
 def segword(sentence):
 	jieba.load_userdict(path+"/user.dict")
 	seg_list = jieba.cut(sentence, cut_all=False)
@@ -73,6 +80,7 @@ def segword(sentence):
 	'''
 	return s
 
+# For training
 def train_frontend():
 	lines = readFile(srcFile)
 	hitlist = []
@@ -95,6 +103,7 @@ def train_frontend():
 	writeFile(misslist, missFile)	
 	return [len(hitlist), len(misslist)]
 
+# Merge 2 dicts
 def merge(d1, d2):
 	for d in d2.keys():
 		if d1.has_key(d):
@@ -102,6 +111,7 @@ def merge(d1, d2):
 	
 	return dict(d1, **d2)
 
+# operation xor for dict
 def xorDict(d1, d2):
 	for k in d2.keys():
 		if d1.has_key(k):
@@ -109,6 +119,7 @@ def xorDict(d1, d2):
 
 	return d1
 
+# Calculate the sum of the values in a dict
 def calcSum(d):
 	sm = 0
 	for k in d.keys():
@@ -116,10 +127,12 @@ def calcSum(d):
 		sm += v
 	return sm
 
+# Build the Prior-probability. 
 def getTokensProbability():
 	keyword = readFile("trainKeyword")
 	keyword = keyword[0]
 	print keyword
+	# Calculate P_TH
 	hitlist = readFile(hitsFile)
 	htoken = dict()
 	for hit in hitlist:
@@ -139,6 +152,7 @@ def getTokensProbability():
 		P_TH[key] = float(htoken[key]) / float(hsum)
 	
 
+	# Calculate P_TM
 	misslist = readFile(missFile)
 	mtoken = dict()
 	for mis in misslist:
@@ -157,6 +171,7 @@ def getTokensProbability():
 	for key in mtoken.keys():
 		P_TM[key] = float(mtoken[key]) / float(msum)
 
+	# Calculate tf-idf and sort, drop the lowest 10%
 	tokens = merge(htoken, mtoken)
 	hidf = {}
 	midf = {}
@@ -181,6 +196,7 @@ def getTokensProbability():
 	mtoken = xorDict(mtoken, midf)
 	tokens = merge(htoken, mtoken)
 	
+	# Store some params in store.xml
 	store = {}
 	store['V'] = len(tokens)
 	store['sum_htoken'] = calcSum(htoken)
@@ -198,13 +214,11 @@ def getP_HT_Table(hsum, msum, P_TH, P_TM):
 	
 	P_HT = dict()
 	for token in P_TH:
-		# Laplace Correction
 		if not(P_TH.has_key(token)) or P_TH[token] == 0:
 			P_TH[token] = 1.0/hsum
 		if not(P_TM.has_key(token)) or P_TM[token] == 0:
 			P_TM[token] = 1.0/msum
 
-		#print P_H,P_M, P_TH[token], P_TM[token]
 		P_HT[token] = getP_HT(P_H, P_M, P_TH[token], P_TM[token])
 		
 	return P_HT
@@ -220,7 +234,6 @@ def getP_MT_Table(hsum, msum, P_TH, P_TM):
 	
 	P_MT = dict()
 	for token in P_TM:
-		# Laplace Correction
 		if not(P_TH.has_key(token)) or P_TH[token] == 0:
 			P_TH[token] = 1.0/hsum
 		if not(P_TM.has_key(token)) or P_TM[token] == 0:
@@ -230,6 +243,7 @@ def getP_MT_Table(hsum, msum, P_TH, P_TM):
 		
 	return P_MT
 
+# argmax probability calculation
 def hitProbability(tokens, P_HT, P_MT, P_H, P_M, store):
 	res = 0
 	s1 = P_H
@@ -237,6 +251,7 @@ def hitProbability(tokens, P_HT, P_MT, P_H, P_M, store):
 	for token in tokens:
 		if token in stopword:
 			continue
+		# Laplace Correction
 		if not(P_HT.has_key(token)) or P_HT[token] == 0:
 			P_HT[token] = (1.0)/float(store['V'] + store['sum_htoken'])
 		if not(P_MT.has_key(token)) or P_MT[token] == 0:
@@ -246,9 +261,9 @@ def hitProbability(tokens, P_HT, P_MT, P_H, P_M, store):
 		s1 *= float(P_HT[token])
 		s2 *= float(P_MT[token])
 
-#	return s1 / ( s1 + s2 )
 	return s1
 
+# argmax probability calculation
 def missProbability(tokens, P_HT, P_MT, P_H, P_M, store):
 	res = 0
 	s1 = P_M
@@ -256,6 +271,7 @@ def missProbability(tokens, P_HT, P_MT, P_H, P_M, store):
 	for token in tokens:
 		if token in stopword:
 			continue
+		# Laplace Correction
 		if not(P_MT.has_key(token)) or P_MT[token] == 0:
 			P_MT[token] = (1.0)/float(store['V'] + store['sum_mtoken'])
 		if not(P_HT.has_key(token)) or P_HT[token] == 0:
@@ -265,7 +281,6 @@ def missProbability(tokens, P_HT, P_MT, P_H, P_M, store):
 		s1 *= float(P_MT[token])
 		s2 *= float(P_HT[token])
 
-	#return s1 / ( s1 + s2 )
 	return s2
 
 def init(keyword, songlist):
@@ -301,6 +316,7 @@ def main():
 
 	P_HT, P_MT, P_H, P_M, hsum, msum, store = init(keyword, songlist)
 	
+	# Store the probability calculated.
 	xmlOperation.create_xml(P_HT, "music_HT_dict.xml");
 	xmlOperation.create_xml({'hits':P_H}, "music_H_dict.xml");
 	xmlOperation.create_xml(P_MT, "music_MT_dict.xml");

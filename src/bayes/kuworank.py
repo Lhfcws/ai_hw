@@ -7,6 +7,7 @@ import re
 import os
 path = os.path.dirname(__file__)
 
+# Encode chars to sinalurl mode
 def sina_urlencode(s):
 	reprStr = repr(s).replace(r'\x', '%25')
 	reprStr = repr(reprStr).replace(' ', '%2520')
@@ -16,6 +17,7 @@ def initUrl(keyword):
 	keyword = urllib.quote(keyword)
 	return "http://www.kuwo.cn/mingxing/" + keyword
 
+# Judge if value is in a list
 def exist(lis, name):
 	for l in lis:
 		if l == name:
@@ -23,6 +25,7 @@ def exist(lis, name):
 
 	return False
 
+# Strip the song name
 def strip(songname):
 	s = list(songname)
 	l = [['(', ')'], ['（','）'], ['[', ']']]
@@ -35,10 +38,12 @@ def strip(songname):
 	
 	return ''.join(s)
 
+# For debug
 def printd(dic):
 	for item in dic.items():
 		print item[0], item[1]
 
+# In case of duplication
 def insert_once(name, value, dic):
 	bo = not dic.has_key(name)
 	if bo:
@@ -58,6 +63,7 @@ def insert_once(name, value, dic):
 
 	return dic
 
+# For debug
 def writeFile(keyword, inv):
 	f = open("inv.js",'a')
 	f.write(',\n')
@@ -72,6 +78,7 @@ def writeFile(keyword, inv):
 	f.close()
 
 
+# Get the rank of songs in sina weibo
 def getWeiboRank(keyword, res):
 	src = "http://s.weibo.com/weibo/"
 	suff= "&scope=ori"

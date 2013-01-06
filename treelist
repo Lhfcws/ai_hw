@@ -1,0 +1,90 @@
+There's some files for test, debug or presentation.
+Only the files in this tree are for running.
+The major python files have been added *.
+PHP files are for graphs show.
+
+src
+├── bayes
+│  *├── bayes.py	
+│   ├── bayes.pyc
+│   ├── editdict.py
+│   ├── editdict.pyc
+│   ├── __init__.py
+│   ├── __init__.pyc
+│  *├── kuworank.py
+│   ├── kuworank.pyc
+│   ├── music_H_dict.xml
+│   ├── music_HT_dict.xml
+│   ├── music_M_dict.xml
+│   ├── music_MT_dict.xml
+│   ├── stopword.py
+│   ├── stopword.pyc
+│   ├── stopword.txt
+│   ├── store.xml
+│   ├── train_result
+│   │   ├── hits_music.txt
+│   │   └── miss_music.txt
+│  *├── transinger.py
+│   ├── transinger.pyc
+│   ├── user.dict
+│  *├── xmlOperation.py
+│   └── xmlOperation.pyc
+├── class_lovemusic.py
+├── class_lovemusic.pyc
+├── collect
+│   ├── accessKey.conf
+│  *├── collect.py
+│   ├── getAccess.py
+│   ├── getAccess.pyc
+│   ├── getUids.py
+│   ├── getUids.pyc
+│   ├── mark.conf
+│   ├── server.conf
+│   ├── setFollows.py
+│   ├── setFollows.pyc
+│   ├── weibo.py
+│   └── weibo.pyc
+├── collectdemo
+│   ├── accessKey.conf
+│  *├── collect.py
+│   ├── collect.pyc
+│   ├── getAccess.py
+│   ├── getAccess.pyc
+│   ├── getUids.py
+│   ├── getUids.pyc
+│   ├── __init__.py
+│   ├── __init__.pyc
+│   ├── mark.conf
+│   ├── server.conf
+│   ├── setFollows.py
+│   ├── setFollows.pyc
+│   ├── weibo.py
+│   └── weibo.pyc
+├── conf.php
+├── conf.pyc
+├──*crawl.py
+├── crawl.pyc
+├── dbconf.py
+├── dbconf.pyc
+├── finish.py
+├── finish.pyc
+├──*generate1.py
+├──*generate.py
+├── graph.php
+├── handle.php
+├── highchart Library
+├── index.php
+├── liangbo.php
+├── mark.conf
+├── model_liangbo.php
+├── model.php
+├──*plots.py
+├── plots.pyc
+├── province_map.js
+├── server.conf
+├── stoppage
+├──*uglysina.py
+├── uglysina.pyc
+└── wait.php
+
+76 directories, 196 files

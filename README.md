@@ -9,6 +9,7 @@ While using splinter, the app will automatically keep popping out the browser an
 
 
 -> _See docs in_ **ai_hw/doc**
+-> _See structure in_ **ai_hw/treelist**	_Especially for TA!!_
 #### Gain a better experience in reading README.md:   <https://github.com/Lhfcws/ai_hw/blob/master/README.md>
 ###This project can be downloaded on Github: <https://github.com/Lhfcws/ai_hw>
 

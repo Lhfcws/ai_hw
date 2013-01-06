@@ -8,14 +8,15 @@ import numpy
 import random
 import matplotlib.pyplot as Mp
 
-
+# Following functions are for least-square method.
 
 def f(i, x):
 	return x**i
 
 def leastSquareSolve(xa, ya):
 	global ORDER
-	ORDER = len(xa)
+	# Linear Fitting
+	ORDER = 1
 	Y = numpy.array(ya)
 	matf = []
 	for x in xa:
@@ -52,6 +53,7 @@ def sortDictByValues(d, key):
 	
 	return newd
 
+# Change the songs in the probability table.
 def trans(dic, key1, key2):
 	pr = dic
 	for k in key1:
